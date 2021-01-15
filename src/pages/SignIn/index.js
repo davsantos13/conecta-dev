@@ -14,6 +14,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import TextField from "@material-ui/core/TextField";
 import authService from "../../services/authService";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { signIn } from "../../actions/accountAction";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,12 +66,15 @@ function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const dispatch = useDispatch();
+  const account = useSelector((state) => state);
 
   async function handleSignIn() {
     try {
-      await authService.signIn(email, password);
+      /*  await authService.signIn(email, password);
+      navigate("/"); */
 
-      navigate("/");
+      await dispatch(signIn(email, password));
     } catch (e) {
       console.log(e);
       setErrorMessage(e.response.data.message);

@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/styles";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import { Bell } from "react-feather";
 import Avatar from "@material-ui/core/Avatar";
+import authService from "../../../services/authService";
 
 const useStyles = makeStyles({
   appBar: {
@@ -31,6 +32,7 @@ const useStyles = makeStyles({
 
 function Header() {
   const classes = useStyles();
+  const user = null;
 
   return (
     <AppBar position="fixed" color="inherit" className={classes.appBar}>
@@ -48,18 +50,8 @@ function Header() {
           <SvgIcon className={classes.bell}>
             <Bell></Bell>
           </SvgIcon>
-          <Avatar src="/" alt="Teste" />
+          <Avatar src={user && user.avatar} alt="Teste" />
         </div>
-        {/* <div className="">
-          <span>Conecta Dev</span>
-        </div>
-        <div>
-          <Button variant="contained" color="primary">
-            Hello World
-          </Button>
-          <span>img1</span>
-          <span>img2</span>
-        </div> */}
       </Toolbar>
     </AppBar>
   );
