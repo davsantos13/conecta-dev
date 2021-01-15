@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography, Box, Avatar, Button, Link } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Box,
+  Avatar,
+  Button,
+  Link,
+  FormHelperText,
+} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import TextField from "@material-ui/core/TextField";
+import authService from "../../services/authService";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,6 +59,22 @@ function Copyright() {
 
 function SignIn() {
   const classes = useStyles();
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  async function handleSignIn() {
+    try {
+      await authService.signIn(email, password);
+
+      navigate("/");
+    } catch (e) {
+      console.log(e);
+      setErrorMessage(e.response.data.message);
+    }
+  }
 
   return (
     <Grid container className={classes.root}>
@@ -92,6 +118,8 @@ function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
             />
             <TextField
               variant="outlined"
@@ -103,15 +131,21 @@ function SignIn() {
               label="Senha"
               name="password"
               autoComplete="current-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
             />
             <Button
               fullWidth
               color="primary"
               variant="contained"
               className={classes.button}
+              onClick={handleSignIn}
             >
               Entrar
             </Button>
+            {errorMessage && (
+              <FormHelperText error>{errorMessage}</FormHelperText>
+            )}
 
             <Grid container>
               <Grid item>
